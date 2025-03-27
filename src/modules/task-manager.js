@@ -65,6 +65,16 @@ export default class TaskManager {
         return this.#projectList;
     }
 
+    getProjectTasks(projectId) {
+        let tasks = [];
+
+        Object.values(this.#projectList[projectId].getTaskList()).forEach(task => {
+            tasks.push(task);
+        });
+
+        return tasks;
+    }
+
     getAllTasks() {
         let tasks = [];
 
