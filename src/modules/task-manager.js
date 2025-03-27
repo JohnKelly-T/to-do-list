@@ -101,7 +101,7 @@ export default class TaskManager {
         Object.values(this.#projectList).forEach( project => {
             Object.values(project.getTaskList()).forEach(task => {
                 if (task.isComplete) {
-                    tasks.push(task);
+                    tasks.push({...task});
                 }
             });
         });
