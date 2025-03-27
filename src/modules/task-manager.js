@@ -57,6 +57,10 @@ export default class TaskManager {
         this.#projectList[this.#projectIdCounter++] = project;
     }
 
+    editProject(projectId, newProjectTitle) {
+        this.#projectList[projectId].title = newProjectTitle;
+    }
+
     getProjects() {
         return this.#projectList;
     }
