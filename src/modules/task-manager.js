@@ -2,11 +2,16 @@ import Project from "./project";
 import Task from "./task";
 
 export default class TaskManager {
+    #taskIdCounter = 0;
     #projectIdCounter = 0;
     #projectList = {};
 
     set projectIdCounter(storedCounter) {
         this.#projectIdCounter = storedCounter;
+    }
+
+    set taskIdCounter(storedCounter) {
+        this.#taskIdCounter = storedCounter;
     }
 
     newTask(projectId, title, description, dueDate, priority) {
@@ -24,7 +29,7 @@ export default class TaskManager {
             task.priority = priority;
         }
 
-        this.#projectList[projectId].addTask(task);
+        this.#projectList[projectId].addTask(task, this.#taskIdCounter++);
     }
 
     newProject(projectTitle) {
