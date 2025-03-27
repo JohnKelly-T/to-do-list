@@ -65,6 +65,10 @@ export default class TaskManager {
         this.#projectList[projectId].title = newProjectTitle;
     }
 
+    deleteProject(projectId) {
+        delete this.#projectList[projectId];
+    }
+
     getProjects() {
         return this.#projectList;
     }
