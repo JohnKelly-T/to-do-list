@@ -1,13 +1,12 @@
 export default class Project {
-    static taskIdCounter = 0;
     #taskList = {};
 
     constructor(title) {
         this.title = title;
     }
 
-    addTask(task) {
-        this.#taskList[Project.taskIdCounter++] = task;
+    addTask(task, taskId) {
+        this.#taskList[taskId] = task;
     }
 
     getTask(taskId) {
