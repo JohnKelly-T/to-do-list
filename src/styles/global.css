@@ -16,6 +16,12 @@
 :root {
     --background-color: #F4F4F4;
     --background-gradient: radial-gradient(at center top, #F4F4F4, #dcdcdc);
+
+    --primary-color: #901AE5;
+}
+
+* {
+    font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 body {
@@ -24,6 +30,32 @@ body {
     padding: 2rem;
     background: var(--background-color);
     background: var(--background-gradient);
+}
+
+.logo-container {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto 1fr;
+    align-items: center;
+    row-gap: 0.5rem;
+}
+
+.logo {
+    width: 50px;
+    aspect-ratio: 1;
+    color: var(--primary-color);
+}
+
+.site-name {
+    color: var(--primary-color);
+}
+
+.motto {
+    grid-column: span 2;
+    color: #454545;
+    font-size: 0.8rem;
+    font-style: italic;
+    padding: 0 1rem;
 }
 
 .main-container {
