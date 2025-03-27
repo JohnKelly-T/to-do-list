@@ -1,0 +1,31 @@
+:root {
+    --background-color: #F4F4F4;
+    --background-gradient: radial-gradient(at center top, #F4F4F4, #dcdcdc);
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    padding: 2rem;
+    background: var(--background-color);
+    background: var(--background-gradient);
+}
+
+.main-container {
+    height: 100%;
+    display: grid;
+    grid-template-columns: 20% 1fr 20%;
+    grid-template-rows: auto 1fr;
+    row-gap: 2rem;
+    column-gap: 5rem;
+}
+
+.content-view-container {
+    grid-column: 2 / 3;
+    grid-row: 1 / -1;
+}
+
+
+
+
+
