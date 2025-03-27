@@ -32,6 +32,13 @@ export default class TaskManager {
         this.#projectList[projectId].addTask(task, this.#taskIdCounter++);
     }
 
+    getTask(projectId, taskId) {
+        let task = this.#projectList[projectId].getTask(taskId);
+
+        // return only a copy of task
+        return { ...task };
+    }
+
     editTask(projectId, taskId, title, description, dueDate, priority) {
         let task = this.#projectList[projectId].getTask(taskId);
 
