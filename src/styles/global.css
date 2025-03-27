@@ -65,7 +65,7 @@ body {
 .main-container {
     height: 100%;
     display: grid;
-    grid-template-columns: 20% 1fr 20%;
+    grid-template-columns: clamp(200px, 20%, 275px) 1fr clamp(200px, 20%, 275px);
     grid-template-rows: auto 1fr;
     row-gap: 2rem;
     column-gap: 5rem;
