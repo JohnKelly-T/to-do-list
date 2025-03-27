@@ -52,6 +52,10 @@ export default class TaskManager {
         }
     }
 
+    deleteTask(projectId, taskId) {
+        delete this.#projectList[projectId].getTaskList()[taskId];
+    }
+
     newProject(projectTitle) {
         let project = new Project(projectTitle);
         this.#projectList[this.#projectIdCounter++] = project;
