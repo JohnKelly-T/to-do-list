@@ -161,6 +161,23 @@ button:hover {
     aspect-ratio: 1;
 }
 
+.date-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.date-display {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid var(--primary-color);
+    border-radius: 5px;
+    color: var(--primary-color);
+    font-weight: bold;
+    height: 3rem;
+    box-shadow: var(--drop-shadow);
+}
 
 
 
