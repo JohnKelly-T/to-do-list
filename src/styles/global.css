@@ -23,6 +23,7 @@
     --card-color-default: #F6F6F6;
     --stroke-color-default: #B0B0B0;
     --hover-color: #EAEAEA;
+    --text-input-background: #e6e6e6;
 
     --drop-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
 }
@@ -177,6 +178,59 @@ button:hover {
     font-weight: bold;
     height: 3rem;
     box-shadow: var(--drop-shadow);
+}
+
+.quick-tasks-container {
+    position: relative;
+    background-color: var(--card-color-default);
+    border: 1px solid var(--stroke-color-default);
+    border-radius: 5px;
+    color: var(--text-color);
+    height: 50vh;
+    padding: 1.5rem;
+    box-shadow: var(--drop-shadow);
+}
+
+.quick-tasks-header {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--stroke-color-default);
+}
+
+#quick-tasks-list {
+    flex: 1;
+    background-color: red;
+}
+
+.quick-task-input-container {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+    padding: 0.5rem 1rem;
+    border-top: 1px solid var(--stroke-color-default);
+    width: 100%;
+}
+
+#quick-task-input {
+    padding: 0.3rem;
+    color: var(--primary-color);
+    background-color: var(--text-input-background);
+    border: 1px solid var(--stroke-color-default);
+    border-radius: 5px;
+}
+
+#quick-task-input:focus-visible {
+    outline: none;
+    border: 1px solid var(--primary-color);
 }
 
 
