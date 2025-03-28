@@ -274,10 +274,10 @@ button:hover {
 .toggle-theme {
     display: flex;
     align-self: start;
-    align-items: center;
+    align-items: end;
     gap: 0.5rem;
     margin-top: 2rem;
-    padding: 0.5rem 0;
+    padding-top: 0.5rem;
     background: none;
     border: none;
     font-size: 0.9rem;
