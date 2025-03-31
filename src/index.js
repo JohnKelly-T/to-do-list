@@ -8,6 +8,6 @@ displayDate();
 
 let taskManager = new TaskManager();
 
-let DomController = new DomController(taskManager);
+let domController = new DomController(taskManager);
 
-DomController.setUpEventListeners();
+domController.setUpEventListeners();
