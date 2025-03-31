@@ -82,7 +82,8 @@ export default class TaskManager {
     }
 
     getProjects() {
-        return this.#projectList;
+        // return only a copy of projectList
+        return {...this.#projectList};
     }
 
     getProjectTasks(projectId) {
