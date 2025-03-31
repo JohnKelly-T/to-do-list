@@ -8,6 +8,9 @@ displayDate();
 
 let taskManager = new TaskManager();
 
+// create default home project
+taskManager.newProject("Home 🏠");
+
 let domController = new DomController(taskManager);
 
 domController.setUpEventListeners();
