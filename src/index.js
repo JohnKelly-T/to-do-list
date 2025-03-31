@@ -1,5 +1,6 @@
 import "./styles/reset.css";
 import "./styles/global.css";
+import "./styles/tasks.css";
 import displayDate from "./modules/display-date";
 import TaskManager from "./modules/task-manager.js";
 import DomController from "./modules/dom-controller.js";
