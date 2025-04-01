@@ -19,7 +19,7 @@ export default class DOMController {
         });
     }
 
-    loadTasksPage(headerTitle, taskList, withAddButton = false) {
+    loadTasksPage(headerTitle, taskList, withAddButton = true) {
         let container = document.querySelector(".content-view-container");
 
         let pageHeader = document.createElement("div");
