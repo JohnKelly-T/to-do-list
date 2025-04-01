@@ -82,3 +82,131 @@
     color: var(--text-color-more-contrast);
     background: var(--stroke-color-default);
 }
+
+.task-list {
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+    padding-top: 1.5rem;
+    gap: 1rem;
+}
+
+.card {
+    display: flex;
+    gap: 1rem;
+    align-items: start;
+    background: var(--card-color-default);
+    border: 1px solid var(--stroke-color-default);
+    border-radius: 10px;
+    padding: 1rem 1.5rem;
+    color: var(--text-color);
+}
+
+.card.high-priority {
+    color: var(--text-color-invert);
+    background: var(--card-color-high-priority);
+    border: 1px solid var(--stroke-color-high-priority);
+}
+
+.card.medium-priority {
+    background: var(--card-color-medium-priority);
+    border: 1px solid var(--stroke-color-medium-priority);
+}
+
+.card.low-priority {
+    background: var(--card-color-low-priority);
+    border: 1px solid var(--stroke-color-low-priority);
+}
+
+.card-checkbox {
+    -webkit-appearance: none;
+    appearance: none;
+    background: none;
+    margin: 0;
+    border: 2px solid var(--stroke-color-default);
+    border-radius: 50%;
+    width: 1.2rem;
+    aspect-ratio: 1;
+    transform: translateY(0.1rem);
+
+    display: grid;
+    place-content: center;
+}
+
+.high-priority .card-checkbox {
+    border: 2px solid var(--text-color-invert);
+}
+
+.medium-priority .card-checkbox {
+    border: 2px solid var(--stroke-color-medium-priority);
+}
+
+.low-priority .card-checkbox {
+    border: 2px solid var(--stroke-color-low-priority);
+}
+
+.card-checkbox::before {
+    content: "";
+    width: 0.8rem;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    transform: scale(0);
+    transition: 100ms transform ease-in-out;
+    background-color: var(--primary-color);
+}
+
+.card-checkbox:checked::before{
+    transform: scale(1);
+}
+
+.card-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.task-title {
+    font-weight: 500;
+}
+
+.extra-info {
+    font-size: 0.8rem;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.extra-info-tag {
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+}
+
+.card-icon {
+    width: 1rem;
+}
+
+.card-options {
+    display: none;
+    gap: 0.6rem;
+    margin-left: auto;
+}
+
+.card:hover .card-options {
+    display: flex;
+}
+
+.card-options button {
+    height: 1.6rem;
+    aspect-ratio: 1;
+    padding: 0;
+    background: none;
+    border: none;
+}
+
+.edit-button {
+    color: inherit;
+}
+
+.delete-button {
+    color: var(--red);
+}
