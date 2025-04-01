@@ -155,6 +155,10 @@
     background-color: var(--primary-color);
 }
 
+.high-priority .card-checkbox::before {
+    background-color: var(--text-color-invert);
+}
+
 .card-checkbox:checked::before{
     transform: scale(1);
 }
