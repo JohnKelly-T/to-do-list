@@ -8,7 +8,7 @@ export default class DOMController {
         let projectListDiv = document.querySelector("#project-list");
         let contentViewContainer = document.querySelector(".content-view-container");
         let addTaskDialog = document.querySelector(".add-task-dialog");
-        let dialogForm = document.querySelector(".dialog-container");
+        let dialogForm = document.querySelector(".dialog-form");
 
         projectListDiv.addEventListener("click", (e) => {
             let navButton = e.target.closest(".project-nav");
