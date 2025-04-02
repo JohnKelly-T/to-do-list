@@ -6,6 +6,9 @@ export default class DOMController {
 
     setUpEventListeners() {
         let projectListDiv = document.querySelector("#project-list");
+        let contentViewContainer = document.querySelector(".content-view-container");
+        let addTaskDialog = document.querySelector(".add-task-dialog");
+        let dialogForm = document.querySelector(".dialog-container");
 
         projectListDiv.addEventListener("click", (e) => {
             let navButton = e.target.closest(".project-nav");
@@ -17,6 +20,27 @@ export default class DOMController {
                 this.loadTasksPage(projectTitle, taskList);
             }
         });
+
+        contentViewContainer.addEventListener("click", (e) => {
+            if (e.target.matches(".add-task-button")) {
+                addTaskDialog.show();
+            }
+        });
+
+        dialogForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            
+            let titleInput = dialogForm.querySelector("#title-input").value;
+            let descriptionInput = dialogForm.querySelector("#description-input").value;
+            let projectId = dialogForm.querySelector("#project-input").value;
+            let dateInput = dialogForm.querySelector("#date-input").value;
+            let priorityInput = dialogForm.querySelector("#priority-input").value;
+
+            let date = dateInput === "" ? dateInput : new Date(dateInput);
+
+            this.taskManager.newTask(projectId, titleInput, descriptionInput, date, priorityInput);
+            this.createCard(projectId, titleInput, descriptionInput, date, priorityInput);
+        })
     }
 
     loadTasksPage(headerTitle, taskList, withAddButton = true) {
@@ -80,6 +104,11 @@ export default class DOMController {
         for (const id in projects) {
             this.createProjectNav(id, projects[id]);
         }
+    }
+
+    // components section
+    createCard(projectId, title, description, dueDate, priority) {
+
     }
 
     createProjectNav(projectId, project) {
