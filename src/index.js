@@ -14,4 +14,7 @@ taskManager.newProject("Home 🏠");
 
 let domController = new DomController(taskManager);
 
+// open home project by default
+domController.loadTasksPage("Home 🏠", taskManager.getProjectTasks(0));
+
 domController.setUpEventListeners();
