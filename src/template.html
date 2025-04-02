@@ -92,23 +92,24 @@
 
      <dialog class="add-task-dialog">
       <form class="dialog-container">
-        <input id="title-input" type="text" placeholder="Task Title">
+        <input id="title-input" type="text" placeholder="Task Title" required>
         <textarea id="description-input" placeholder="Description" rows="4"></textarea>
         <div class="options-container">
           <div class="options-left">
             <select name="project-input" id="project-input">
-              <option value="home">Home 🏠</option>
+              <option value="0">Home 🏠</option>
             </select>
             <input type="date" name="date-input" id="date-input">
             <select name="priority" id="priority-input">
-              <option value="high">High</option>
-              <option value="medium">Medium</option>
+              <option value="" selected disabled>None</option>
               <option value="low">Low</option>
+              <option value="medium">Medium</option>
+              <option value="high">High</option>
             </select>
           </div>
 
           <div class="options-right">
-            <button id="cancel-dialog">Cancel</button>
+            <button type="button" id="cancel-dialog">Cancel</button>
             <button type="submit">Save</button>
           </div>
         </div>
