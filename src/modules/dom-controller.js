@@ -41,6 +41,20 @@ export default class DOMController {
             this.taskManager.newTask(projectId, titleInput, descriptionInput, date, priorityInput);
             this.createCard(projectId, titleInput, descriptionInput, date, priorityInput);
         })
+
+        
+        addTaskDialog.addEventListener("click", (e) => {
+            // close dialog and clear inputs
+            if (e.target.matches(".add-task-dialog") || e.target.matches("#cancel-dialog")) {
+                addTaskDialog.close();
+
+                dialogForm.querySelector("#title-input").value = "";
+                dialogForm.querySelector("#description-input").value = "";
+                dialogForm.querySelector("#project-input").value = 0;
+                dialogForm.querySelector("#date-input").value = "";
+                dialogForm.querySelector("#priority-input").value = "";
+            }
+        });
     }
 
     loadTasksPage(headerTitle, taskList, withAddButton = true) {
