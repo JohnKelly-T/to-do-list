@@ -194,6 +194,10 @@
     margin-left: auto;
 }
 
+.card-options svg {
+    pointer-events: none;
+}
+
 .card:hover .card-options {
     display: flex;
 }

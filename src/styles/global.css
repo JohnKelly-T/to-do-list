@@ -139,10 +139,12 @@ button:hover {
 
 .nav-btn-icon {
     height: 1.4rem;
+    pointer-events: none;
 }
 
 .nav-btn-text {
     font-size: 0.9rem;
+    pointer-events: none;
 }
 
 .nav-form-input {
@@ -162,6 +164,7 @@ button:hover {
     font-size: 0.8rem;
     margin-left: auto;
     color: var(--text-color-less-contrast);
+    pointer-events: none;
 }
 
 .project-section {
@@ -199,6 +202,10 @@ button:hover {
 
 .project-nav {
     position: relative;
+}
+
+.project-nav svg {
+    pointer-events: none;
 }
 
 .delete-project-button {
