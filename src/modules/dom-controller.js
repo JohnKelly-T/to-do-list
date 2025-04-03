@@ -69,7 +69,7 @@ export default class DOMController {
         this.clearContentView();
 
         let container = document.querySelector(".content-view-container");
-        
+
         // set project id to the container
         container.dataset.projectId = projectId;
 
@@ -256,7 +256,6 @@ export default class DOMController {
     }
 
     createProjectNav(projectId, project) {
-        console.log(project.title);
         let projectListDiv = document.querySelector("#project-list");
 
         let projectNav = document.createElement("button");
@@ -326,9 +325,6 @@ export default class DOMController {
                 this.taskManager.newProject(projectTitle);
                 this.loadProjects();
             }
-
-
-            console.log("mini project form submitted ", projectTitle);
         })
     }
 }
