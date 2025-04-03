@@ -11,6 +11,7 @@ export default class DOMController {
         let contentViewContainer = document.querySelector(".content-view-container");
         let addTaskDialog = document.querySelector(".add-task-dialog");
         let dialogForm = document.querySelector(".dialog-form");
+        let addTaskButton = document.querySelector("#add-task-button");
 
         projectListDiv.addEventListener("click", (e) => {
             let navButton = e.target.closest(".project-nav");
@@ -56,6 +57,10 @@ export default class DOMController {
                 dialogForm.querySelector("#date-input").value = "";
                 dialogForm.querySelector("#priority-input").value = "";
             }
+        });
+
+        addTaskButton.addEventListener("click", (e) => {
+
         });
     }
 
@@ -259,8 +264,13 @@ export default class DOMController {
         let count = Object.keys(project.getTaskList()).length;
         taskCount.textContent = count === 0 ? "" : count;
 
+        let deleteProjectButton = document.createElement("button");
+        deleteProjectButton.classList.add("delete-project-button");
+        deleteProjectButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M7.616 20q-.672 0-1.144-.472T6 18.385V6H5V5h4v-.77h6V5h4v1h-1v12.385q0 .69-.462 1.153T16.384 20zM17 6H7v12.385q0 .269.173.442t.443.173h8.769q.23 0 .423-.192t.192-.424zM9.808 17h1V8h-1zm3.384 0h1V8h-1zM7 6v13z" stroke-width="0.2" stroke="currentColor"/></svg>`;
+
         projectNav.appendChild(navTitle);
         projectNav.appendChild(taskCount);
+        projectNav.appendChild(deleteProjectButton);
 
         projectListDiv.appendChild(projectNav);
     }
