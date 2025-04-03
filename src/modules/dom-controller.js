@@ -24,6 +24,24 @@ export default class DOMController {
 
         contentViewContainer.addEventListener("click", (e) => {
             if (e.target.matches(".add-task-button")) {
+                let projectInput = document.querySelector("#project-input");
+                // clear project Input
+                projectInput.innerHTML = "";
+                
+                let projectList = this.taskManager.getProjects();
+                
+                for (let id in projectList) {
+                    let option = document.createElement("option");
+                    option.textContent = projectList[id].title;
+                    option.value = id;
+
+                    if (id === contentViewContainer.dataset.projectId) {
+                        option.selected = true;
+                    }
+
+                    projectInput.appendChild(option);
+                }
+
                 addTaskDialog.show();
             }
         });
