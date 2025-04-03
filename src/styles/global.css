@@ -184,6 +184,26 @@ button:hover {
     aspect-ratio: 1;
 }
 
+.project-nav {
+    position: relative;
+}
+
+.delete-project-button {
+    position: absolute;
+    display: none;
+    right: 0.2rem;
+    width: 1.5rem;
+    aspect-ratio: 1;
+    padding: 0;
+    background: var(--hover-color);
+    border: none;
+    color: var(--red);
+}
+
+.project-nav:hover .delete-project-button {
+    display: block;
+}
+
 .date-container {
     display: flex;
     flex-direction: column;
