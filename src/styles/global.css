@@ -120,7 +120,7 @@ button:hover {
     gap: 0.2rem;
 }
 
-.nav-btn {
+.nav-btn, .nav-form {
     display: flex;
     gap: 0.3rem;
     align-items: center;
@@ -133,7 +133,7 @@ button:hover {
     color: var(--text-color);
 }
 
-.nav-btn:hover {
+.nav-btn:hover, .nav-form:hover {
     background-color: var(--hover-color);
 }
 
@@ -143,6 +143,19 @@ button:hover {
 
 .nav-btn-text {
     font-size: 0.9rem;
+}
+
+.nav-form-input {
+    font-size: 0.9rem;
+    width: 80%;
+    border: none;
+    background: none;
+    color: var(--text-color);
+}
+
+.nav-form-input:focus-visible {
+    outline: none;
+    border: none;
 }
 
 .task-count {
