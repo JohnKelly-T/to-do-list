@@ -27,7 +27,7 @@ export default class DOMController {
                 let projectInput = document.querySelector("#project-input");
                 // clear project Input
                 projectInput.innerHTML = "";
-                
+
                 let projectList = this.taskManager.getProjects();
                 
                 for (let id in projectList) {
@@ -58,7 +58,7 @@ export default class DOMController {
             let date = dateInput === "" ? dateInput : new Date(dateInput);
 
             this.taskManager.newTask(projectId, titleInput, descriptionInput, date, priorityInput);
-            this.loadProjectPage(projectId);
+            this.loadProjectPage(contentViewContainer.dataset.projectId);
             addTaskDialog.close();
             this.clearDialogForm();
         })
