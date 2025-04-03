@@ -44,6 +44,12 @@ export default class DOMController {
 
                 addTaskDialog.show();
             }
+
+            if (e.target.matches(".delete-button")) {
+                let card = e.target.closest(".card");
+                this.taskManager.deleteTask(card.dataset.projectId, card.dataset.taskId);
+                card.remove();
+            }
         });
 
         dialogForm.addEventListener("submit", (e) => {
@@ -149,16 +155,16 @@ export default class DOMController {
         let projectTasks = this.taskManager.getProjectTasks(projectId);
         
 
-        Object.values(projectTasks).forEach(task => {
-            let title = task.title;
-            let description = task.description;
-            let dueDate = task.dueDate;
-            let priority = task.priority;
+        for (let taskId in projectTasks) {
+            let title = projectTasks[taskId].title;
+            let description = projectTasks[taskId].description;
+            let dueDate = projectTasks[taskId].dueDate;
+            let priority = projectTasks[taskId].priority;
 
-            let card = this.createCard(projectId, title, description, dueDate, priority);
+            let card = this.createCard(projectId, taskId, title, description, dueDate, priority);
 
             taskListDiv.appendChild(card);
-        });
+        };
     }
 
     loadProjects() {
@@ -189,9 +195,11 @@ export default class DOMController {
     }
 
     // components section
-    createCard(projectId, title, description, dueDate, priority) {
+    createCard(projectId, taskId, title, description, dueDate, priority) {
         let card = document.createElement("div");
         
+        card.dataset.projectId = projectId;
+        card.dataset.taskId = taskId;
         card.classList.add("card");
 
         // card radio checkbox
