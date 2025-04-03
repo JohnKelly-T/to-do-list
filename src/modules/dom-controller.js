@@ -11,7 +11,7 @@ export default class DOMController {
         let contentViewContainer = document.querySelector(".content-view-container");
         let addTaskDialog = document.querySelector(".add-task-dialog");
         let dialogForm = document.querySelector(".dialog-form");
-        let addTaskButton = document.querySelector("#add-task-button");
+        let addProjectButton = document.querySelector("#add-project");
 
         projectListDiv.addEventListener("click", (e) => {
             let navButton = e.target.closest(".project-nav");
@@ -59,9 +59,10 @@ export default class DOMController {
             }
         });
 
-        addTaskButton.addEventListener("click", (e) => {
-
+        addProjectButton.addEventListener("click", (e) => {
+            this.createProjectNavForm();
         });
+
     }
 
     loadProjectPage(projectId) {
@@ -141,6 +142,11 @@ export default class DOMController {
 
     loadProjects() {
         let projects = this.taskManager.getProjects();
+
+        // clear project list div
+        let projectListDiv = document.querySelector("#project-list");
+        projectListDiv.innerHTML = "";
+        
         for (const id in projects) {
             this.createProjectNav(id, projects[id]);
         }
@@ -273,5 +279,53 @@ export default class DOMController {
         projectNav.appendChild(deleteProjectButton);
 
         projectListDiv.appendChild(projectNav);
+    }
+
+    createProjectNavForm() {
+        let projectListDiv = document.querySelector("#project-list");
+
+        let projectNav = document.createElement("form");
+        projectNav.classList.add("nav-form");
+        projectNav.innerHTML = '<svg class="nav-btn-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M4.616 19q-.691 0-1.153-.462T3 17.384V6.616q0-.691.463-1.153T4.615 5h4.31q.323 0 .628.13q.305.132.522.349L11.596 7h7.789q.69 0 1.153.463T21 8.616v8.769q0 .69-.462 1.153T19.385 19zm0-1h14.769q.269 0 .442-.173t.173-.442v-8.77q0-.269-.173-.442T19.385 8h-8.19L9.366 6.173q-.096-.096-.202-.134Q9.06 6 8.946 6h-4.33q-.269 0-.442.173T4 6.616v10.769q0 .269.173.442t.443.173M4 18V6zm10.9-3.338l1.392 1.063q.131.087.24.006t.059-.217l-.51-1.741l1.461-1.188q.106-.087.056-.22q-.05-.134-.186-.134h-1.766l-.554-1.685q-.05-.136-.192-.136t-.192.136l-.554 1.685h-1.765q-.137 0-.187.134q-.05.133.056.22l1.461 1.188l-.51 1.74q-.05.137.06.218t.239-.006z"/></svg>';
+
+        let navTitleInput = document.createElement("input");
+        navTitleInput.type = "text";
+        navTitleInput.name = "project-title";
+        navTitleInput.placeholder = "Project Title";
+
+        navTitleInput.classList.add("nav-form-input");
+
+        let taskCount = document.createElement("div");
+        taskCount.classList.add("task-count");
+
+        projectNav.appendChild(navTitleInput);
+        projectNav.appendChild(taskCount);
+
+        projectListDiv.appendChild(projectNav);
+
+        navTitleInput.focus();
+
+        // submit when clicked outside of form 
+        projectNav.addEventListener("focusout", (e) => {
+            projectNav.requestSubmit();
+        });
+
+        projectNav.addEventListener("submit", (e) => {
+            e.preventDefault();
+
+            const formData = new FormData(e.target);
+            const projectTitle = formData.get("project-title");
+
+            if (!projectTitle) {
+                projectNav.remove();
+            }
+            else {
+                this.taskManager.newProject(projectTitle);
+                this.loadProjects();
+            }
+
+
+            console.log("mini project form submitted ", projectTitle);
+        })
     }
 }
