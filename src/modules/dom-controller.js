@@ -1,3 +1,5 @@
+import { format, isToday, isTomorrow, isBefore, isThisYear } from "date-fns";
+
 export default class DOMController {
     constructor(taskManager) {
         this.taskManager = taskManager;
@@ -37,7 +39,9 @@ export default class DOMController {
             let date = dateInput === "" ? dateInput : new Date(dateInput);
 
             this.taskManager.newTask(projectId, titleInput, descriptionInput, date, priorityInput);
-            this.createCard(projectId, titleInput, descriptionInput, date, priorityInput);
+            this.loadProjectPage(projectId);
+            addTaskDialog.close();
+            this.clearDialogForm();
         })
 
         
@@ -56,6 +60,8 @@ export default class DOMController {
     }
 
     loadProjectPage(projectId) {
+        this.clearContentView();
+
         let container = document.querySelector(".content-view-container");
 
         let pageHeader = document.createElement("div");
@@ -106,6 +112,26 @@ export default class DOMController {
         pageHeader.appendChild(sortDropdown);
 
         container.appendChild(pageHeader);
+        
+        let taskListDiv = document.createElement("div")
+        taskListDiv.classList.add("task-list");
+
+        container.appendChild(taskListDiv);
+
+        // load tasks
+        let projectTasks = this.taskManager.getProjectTasks(projectId);
+        
+
+        Object.values(projectTasks).forEach(task => {
+            let title = task.title;
+            let description = task.description;
+            let dueDate = task.dueDate;
+            let priority = task.priority;
+
+            let card = this.createCard(projectId, title, description, dueDate, priority);
+
+            taskListDiv.appendChild(card);
+        });
     }
 
     loadProjects() {
@@ -115,9 +141,104 @@ export default class DOMController {
         }
     }
 
+    clearContentView() {
+        let contentViewContainer = document.querySelector(".content-view-container");
+        contentViewContainer.innerHTML = "";
+    }
+
+    clearDialogForm() {
+        let dialogForm = document.querySelector(".dialog-form");
+
+        dialogForm.querySelector("#title-input").value = "";
+        dialogForm.querySelector("#description-input").value = "";
+        dialogForm.querySelector("#project-input").value = 0;
+        dialogForm.querySelector("#date-input").value = "";
+        dialogForm.querySelector("#priority-input").value = "";
+    }
+
     // components section
     createCard(projectId, title, description, dueDate, priority) {
+        let card = document.createElement("div");
+        
+        card.classList.add("card");
 
+        // card radio checkbox
+        let radioInput = document.createElement("input")
+        radioInput.type = "radio";
+        radioInput.classList.add("card-checkbox");
+
+        card.appendChild(radioInput);
+
+        // card info section
+        let cardInfo = document.createElement("div");
+        cardInfo.classList.add("card-info");
+
+        let taskTitle = document.createElement("div");
+        taskTitle.classList.add("task-title");
+        taskTitle.textContent = title;
+
+        let extraInfo = document.createElement("div");
+        extraInfo.classList.add("extra-info");
+
+        if (dueDate) {
+            let dateTag = document.createElement("div");
+            dateTag.classList.add("extra-info-tag");
+            
+            if (isToday(dueDate)) {
+                dueDate = "Today";
+                dateTag.classList.add("today");
+            } else if (isTomorrow(dueDate)) {
+                dueDate = "Tomorrow";
+                dateTag.classList.add("tomorrow");
+            } else if (isBefore(dueDate,  Date.now())) {
+                dueDate = "Overdue";
+                dateTag.classList.add("pastToday");
+            } else if (isThisYear(dueDate)) {
+                dueDate = format(dueDate, "d MMM");
+            } else if (!isThisYear(dueDate)) {
+                dueDate = format(dueDate, "d MMM yyyy");
+            }
+
+            dateTag.innerHTML = `
+                <svg class="card-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g fill="none"><path fill="currentColor" d="M4 7v2h16V7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2"/><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 5h2a2 2 0 0 1 2 2v2H4V7a2 2 0 0 1 2-2h2m8 0V3m0 2H8m0-2v2M4 9.5V19a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9.5"/></g></svg>
+                ${dueDate}
+            `
+            extraInfo.appendChild(dateTag);
+        }
+
+        cardInfo.appendChild(taskTitle);
+        cardInfo.appendChild(extraInfo);
+
+        card.appendChild(cardInfo);
+
+        // card options
+        let cardOptions = document.createElement("div");
+        cardOptions.classList.add("card-options");
+
+        let editButton = document.createElement("button");
+        editButton.classList.add("edit-button");
+        editButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M5.616 20q-.691 0-1.153-.462T4 18.384V5.616q0-.691.463-1.153T5.616 4h8.386l-1 1H5.616q-.231 0-.424.192T5 5.616v12.769q0 .23.192.423t.423.192h12.77q.23 0 .423-.192t.192-.423v-7.489l1-1v8.489q0 .69-.462 1.153T18.384 20zM10 14v-2.615l8.944-8.944q.166-.166.348-.23t.385-.063q.189 0 .368.064t.326.21L21.483 3.5q.16.166.242.365t.083.4t-.061.382q-.06.18-.226.345L12.52 14zm10.814-9.715l-1.112-1.17zM11 13h1.092l6.666-6.666l-.546-.546l-.61-.584L11 11.806zm7.212-7.211l-.61-.585zl.546.546z" stroke-width="0.2" stroke="currentColor"/></svg>`;
+
+        let deleteButton = document.createElement("button");
+        deleteButton.classList.add("delete-button");
+        deleteButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M7.616 20q-.672 0-1.144-.472T6 18.385V6H5V5h4v-.77h6V5h4v1h-1v12.385q0 .69-.462 1.153T16.384 20zM17 6H7v12.385q0 .269.173.442t.443.173h8.769q.23 0 .423-.192t.192-.424zM9.808 17h1V8h-1zm3.384 0h1V8h-1zM7 6v13z" stroke-width="0.2" stroke="currentColor"/></svg>`;
+
+        cardOptions.appendChild(editButton);
+        cardOptions.appendChild(deleteButton);
+
+        card.appendChild(cardOptions);
+
+        // add priority for card
+        if (priority === "high") {
+            card.classList.add("high-priority");
+        } else if (priority === "medium") {
+            card.classList.add("medium-priority");
+        } else if (priority === "low") {
+            card.classList.add("low-priority");
+        }
+
+        return card;
+        
     }
 
     createProjectNav(projectId, project) {
