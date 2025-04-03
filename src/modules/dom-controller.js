@@ -69,6 +69,9 @@ export default class DOMController {
         this.clearContentView();
 
         let container = document.querySelector(".content-view-container");
+        
+        // set project id to the container
+        container.dataset.projectId = projectId;
 
         let pageHeader = document.createElement("div");
         pageHeader.classList.add("page-header");
@@ -146,7 +149,7 @@ export default class DOMController {
         // clear project list div
         let projectListDiv = document.querySelector("#project-list");
         projectListDiv.innerHTML = "";
-        
+
         for (const id in projects) {
             this.createProjectNav(id, projects[id]);
         }
