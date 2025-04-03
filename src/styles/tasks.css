@@ -114,7 +114,6 @@
 }
 
 .card.low-priority {
-    background: var(--card-color-low-priority);
     border: 1px solid var(--stroke-color-low-priority);
 }
 
@@ -212,5 +211,17 @@
 }
 
 .delete-button {
+    color: var(--red);
+}
+
+.today {
+    color: var(--green);
+}
+
+.tomorrow {
+    color: var(--yellow);
+}
+
+.pastToday {
     color: var(--red);
 }
