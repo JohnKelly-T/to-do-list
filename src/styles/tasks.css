@@ -176,6 +176,10 @@
     font-weight: 500;
 }
 
+.completed-task-title {
+    text-decoration: line-through;
+}
+
 .extra-info {
     font-size: 0.8rem;
     display: flex;
