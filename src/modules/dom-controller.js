@@ -90,6 +90,13 @@ export default class DOMController {
 
             let date = dateInput === "" ? dateInput : new Date(dateInput);
 
+            // convert to null if they're empty
+
+            titleInput = titleInput === "" ? null : titleInput;
+            descriptionInput = descriptionInput === "" ? null : descriptionInput;
+            dateInput = dateInput === "" ? null : dateInput;
+            priorityInput = priorityInput === "" ? null : priorityInput;
+
             this.taskManager.newTask(projectId, titleInput, descriptionInput, date, priorityInput);
             this.loadProjectPage(contentViewContainer.dataset.projectId);
             addTaskDialog.close();
