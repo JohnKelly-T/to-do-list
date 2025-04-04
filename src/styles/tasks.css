@@ -132,6 +132,10 @@
     place-content: center;
 }
 
+.card-checkbox:hover {
+    cursor: pointer;
+}
+
 .high-priority .card-checkbox {
     border: 2px solid var(--text-color-invert);
 }
