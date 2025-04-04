@@ -3,7 +3,7 @@
     display: flex;
     align-items: end;
     gap: 1rem;
-    padding-bottom: 0.8rem;
+    padding: 0 2rem 0.8rem;
 }
 
 .page-header::before {
@@ -87,7 +87,7 @@
     display: flex;
     flex-direction: column;
     overflow: auto;
-    padding-top: 1.5rem;
+    padding: 1.5rem 2rem 2rem;
     gap: 1rem;
 }
 
