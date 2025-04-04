@@ -118,7 +118,24 @@ export default class DOMController {
             priorityInput = priorityInput === "" ? null : priorityInput;
 
             this.taskManager.newTask(projectId, titleInput, descriptionInput, date, priorityInput);
-            this.loadProjectPage(contentViewContainer.dataset.projectId);
+            // reload respective page
+            switch (contentViewContainer.dataset.type) {
+                case "today": 
+                    this.loadTodayPage();
+                    break;
+                case "upcoming": 
+                    this.loadUpcomingPage();
+                    break;
+                case "completed": 
+                    this.loadCompletedTasksPage();
+                    break;
+                case "overdue": 
+                    this.loadOverDuePage();
+                    break;
+                case "project": 
+                    this.loadProjectPage(contentViewContainer.dataset.projectId);
+            }
+
             addTaskDialog.close();
             this.clearDialogForm();
         })
@@ -159,6 +176,9 @@ export default class DOMController {
         this.clearContentView();
 
         let container = document.querySelector(".content-view-container");
+
+        // add dataset attribute to tell page type
+        container.dataset.type = "today";
 
         // remove project id from dataset
         delete container.dataset.projectId;
@@ -212,6 +232,9 @@ export default class DOMController {
 
         let container = document.querySelector(".content-view-container");
 
+        // add dataset attribute to tell page type
+        container.dataset.type = "upcoming";
+
         // remove project id from dataset
         delete container.dataset.projectId;
 
@@ -264,6 +287,9 @@ export default class DOMController {
 
         let container = document.querySelector(".content-view-container");
 
+        // add dataset attribute to tell page type
+        container.dataset.type = "completed";
+
         // remove project id from dataset
         delete container.dataset.projectId;
 
@@ -308,6 +334,9 @@ export default class DOMController {
         this.clearContentView();
 
         let container = document.querySelector(".content-view-container");
+
+        // add dataset attribute to tell page type
+        container.dataset.type = "overdue";
 
         // remove project id from dataset
         delete container.dataset.projectId;
@@ -356,6 +385,9 @@ export default class DOMController {
         this.clearContentView();
 
         let container = document.querySelector(".content-view-container");
+
+        // add dataset attribute to tell page type
+        container.dataset.type = "project";
 
         // set project id to the container
         container.dataset.projectId = projectId;
