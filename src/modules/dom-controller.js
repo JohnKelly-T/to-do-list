@@ -4,6 +4,10 @@ export default class DOMController {
     constructor(taskManager) {
         this.taskManager = taskManager;
         this.loadProjects();
+
+        // set active nav
+        let homeNav = document.querySelector("#home");
+        this.changeActiveNav(homeNav);
     }
 
     setUpEventListeners() {
@@ -29,6 +33,10 @@ export default class DOMController {
 
             if (e.target.matches("#overdue")) {
                 this.loadOverDuePage();
+            }
+
+            if (e.target.matches(".nav-btn")) {
+                this.changeActiveNav(e.target);
             }
         });
 
@@ -133,6 +141,18 @@ export default class DOMController {
             this.createProjectNavForm();
         });
 
+    }
+
+    changeActiveNav(activeNav) {
+        let navs = document.querySelectorAll(".nav-btn");
+
+        Object.values(navs).forEach(navBtn => {
+            if (navBtn === activeNav) {
+                navBtn.classList.add("active-nav");
+            } else {
+                navBtn.classList.remove("active-nav");
+            }
+        })
     }
 
     loadTodayPage() {
@@ -737,6 +757,8 @@ export default class DOMController {
         projectNav.appendChild(taskCount);
 
         if (projectId != 0) projectNav.appendChild(deleteProjectButton);
+
+        if (projectId == 0) projectNav.id = "home";
 
         projectListDiv.appendChild(projectNav);
     }
