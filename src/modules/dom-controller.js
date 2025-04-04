@@ -315,7 +315,10 @@ export default class DOMController {
             let projectTasks = this.taskManager.getProjectTasks(projectId);
 
             for (let taskId in projectTasks) {
-                if (!isToday(projectTasks[taskId].dueDate) && isBefore(projectTasks[taskId].dueDate, Date.now()) && !projectTasks[taskId].isComplete) {
+                if ( projectTasks[taskId].dueDate
+                    && !isToday(projectTasks[taskId].dueDate) 
+                    && isBefore(projectTasks[taskId].dueDate, Date.now()) 
+                    && !projectTasks[taskId].isComplete) {
                     let title = projectTasks[taskId].title;
                     let description = projectTasks[taskId].description;
                     let dueDate = projectTasks[taskId].dueDate;
