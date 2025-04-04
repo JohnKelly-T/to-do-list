@@ -21,7 +21,11 @@ export default class DOMController {
         });
 
         projectListDiv.addEventListener("click", (e) => {
-            let projectId = Number(e.target.closest(".project-nav").dataset.id);
+            let projectId;
+
+            if (!e.target.matches("#project-list")) {
+                projectId = Number(e.target.closest(".project-nav").dataset.id);
+            }
             
             if (e.target.matches(".project-nav")) {
                 this.loadProjectPage(projectId);
