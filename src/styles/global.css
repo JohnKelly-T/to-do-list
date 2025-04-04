@@ -34,6 +34,7 @@
     --stroke-color-low-priority: #47B1EB;
 
     --hover-color: #EAEAEA;
+    --active-color: #E8D5F6;
     --text-input-background: #e6e6e6;
     --red: #e96161;
     --green: #34D342;
@@ -174,6 +175,11 @@ button:hover {
 .nav-form-input:focus-visible {
     outline: none;
     border: none;
+}
+
+.active-nav {
+    background: var(--active-color);
+    color: var(--primary-color);
 }
 
 .task-count {
