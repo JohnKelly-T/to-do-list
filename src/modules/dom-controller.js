@@ -1,4 +1,4 @@
-import { format, isToday, isTomorrow, isBefore, isThisYear, isFuture } from "date-fns";
+import { format, isToday, isTomorrow, isBefore, isThisYear, isFuture, isPast } from "date-fns";
 
 export default class DOMController {
     constructor(taskManager) {
@@ -25,6 +25,10 @@ export default class DOMController {
 
             if (e.target.matches("#upcoming")) {
                 this.loadUpcomingPage();
+            }
+
+            if (e.target.matches("#overdue")) {
+                this.loadOverDuePage();
             }
         });
 
@@ -289,7 +293,7 @@ export default class DOMController {
                     let dueDate = projectTasks[taskId].dueDate;
                     let priority = projectTasks[taskId].priority;
 
-                    let card = this.createUpcomingCard(projectId, taskId, title, description, dueDate, priority);
+                    let card = this.createFullInfoCard(projectId, taskId, title, description, dueDate, priority);
 
                     taskListDiv.appendChild(card);
                 }
@@ -335,6 +339,81 @@ export default class DOMController {
                     let priority = projectTasks[taskId].priority;
 
                     let card = this.createCompletedCard(projectId, taskId, title, description, dueDate, priority);
+
+                    taskListDiv.appendChild(card);
+                }
+            }
+        });
+    }
+
+    loadOverDuePage() {
+        this.clearContentView();
+
+        let container = document.querySelector(".content-view-container");
+
+        // remove project id from dataset
+        delete container.dataset.projectId;
+
+        let pageHeader = document.createElement("div");
+        pageHeader.classList.add("page-header");
+
+        let pageTitle = document.createElement("div");
+        pageTitle.classList.add("page-title");
+        pageTitle.textContent = "Overdue ❗";
+        
+        let sortDropdown = document.createElement("div");
+        sortDropdown.classList.add("sort-dropdown");
+
+        let sortButton = document.createElement("button");
+        sortButton.classList.add("sort-button");
+        sortButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 21 21"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="m10.5 12.5l4 4.107l4-4.107m-8-4l-4-4l-4 3.997m4-3.997v12m8-12v12" stroke-width="1.2"/></svg>';
+
+        let sortDropdownMenu = document.createElement("div");
+        sortDropdownMenu.classList.add("sort-dropdown-menu");
+
+        let sortDateAdded = document.createElement("button");
+        sortDateAdded.setAttribute("data-value", "date-added");
+        sortDateAdded.textContent = "Date Added";
+
+        let sortPriority = document.createElement("button");
+        sortPriority.setAttribute("data-value", "priority");
+        sortPriority.textContent = "Priority";
+
+        let sortDueDate = document.createElement("button");
+        sortDueDate.setAttribute("data-value", "due-date");
+        sortDueDate.textContent = "Due Date";
+
+        sortDropdownMenu.appendChild(sortDateAdded);
+        sortDropdownMenu.appendChild(sortPriority);
+        sortDropdownMenu.appendChild(sortDueDate);
+
+        sortDropdown.appendChild(sortButton);
+        sortDropdown.appendChild(sortDropdownMenu);
+
+        pageHeader.appendChild(pageTitle);
+        pageHeader.appendChild(sortDropdown);
+
+        container.appendChild(pageHeader);
+        
+        let taskListDiv = document.createElement("div")
+        taskListDiv.classList.add("task-list");
+
+        container.appendChild(taskListDiv);
+
+        // load tasks of current day
+        let projects = this.taskManager.getProjects();
+
+        Object.entries(projects).forEach(([projectId, project]) => {
+            let projectTasks = this.taskManager.getProjectTasks(projectId);
+
+            for (let taskId in projectTasks) {
+                if (!isToday(projectTasks[taskId].dueDate) && isBefore(projectTasks[taskId].dueDate, Date.now()) && !projectTasks[taskId].isComplete) {
+                    let title = projectTasks[taskId].title;
+                    let description = projectTasks[taskId].description;
+                    let dueDate = projectTasks[taskId].dueDate;
+                    let priority = projectTasks[taskId].priority;
+
+                    let card = this.createFullInfoCard(projectId, taskId, title, description, dueDate, priority);
 
                     taskListDiv.appendChild(card);
                 }
@@ -657,7 +736,7 @@ export default class DOMController {
         return card;
     }
 
-    createUpcomingCard(projectId, taskId, title, description, dueDate, priority) {
+    createFullInfoCard(projectId, taskId, title, description, dueDate, priority) {
         let card = document.createElement("div");
         
         card.dataset.projectId = projectId;
