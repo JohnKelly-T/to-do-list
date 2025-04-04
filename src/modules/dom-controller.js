@@ -12,6 +12,13 @@ export default class DOMController {
         let addTaskDialog = document.querySelector(".add-task-dialog");
         let dialogForm = document.querySelector(".dialog-form");
         let addProjectButton = document.querySelector("#add-project");
+        let sideNav = document.querySelector(".side-nav");
+
+        sideNav.addEventListener("click", (e) => {
+            if (e.target.matches("#completed")) {
+                this.loadCompletedTasksPage();
+            }
+        });
 
         projectListDiv.addEventListener("click", (e) => {
             let projectId = Number(e.target.closest(".project-nav").dataset.id);
@@ -60,6 +67,12 @@ export default class DOMController {
                 this.taskManager.deleteTask(card.dataset.projectId, card.dataset.taskId);
                 card.remove();
             }
+
+            if (e.target.matches(".card-checkbox")) {
+                let card = e.target.closest(".card");
+                this.taskManager.completeTask(card.dataset.projectId, card.dataset.taskId);
+                card.remove();
+            }
         });
 
         dialogForm.addEventListener("submit", (e) => {
@@ -97,6 +110,51 @@ export default class DOMController {
             this.createProjectNavForm();
         });
 
+    }
+
+    loadCompletedTasksPage() {
+        this.clearContentView();
+
+        let container = document.querySelector(".content-view-container");
+
+        // remove project id from dataset
+        delete container.dataset.projectId;
+
+        let pageHeader = document.createElement("div");
+        pageHeader.classList.add("page-header");
+
+        let pageTitle = document.createElement("div");
+        pageTitle.classList.add("page-title");
+        pageTitle.textContent = "Completed ☑️";
+
+        pageHeader.appendChild(pageTitle);
+
+        container.appendChild(pageHeader);
+        
+        let taskListDiv = document.createElement("div")
+        taskListDiv.classList.add("task-list");
+
+        container.appendChild(taskListDiv);
+
+        // load completed tasks
+        let projects = this.taskManager.getProjects();
+
+        Object.entries(projects).forEach(([projectId, project]) => {
+            let projectTasks = this.taskManager.getProjectTasks(projectId);
+
+            for (let taskId in projectTasks) {
+                if (projectTasks[taskId].isComplete) {
+                    let title = projectTasks[taskId].title;
+                    let description = projectTasks[taskId].description;
+                    let dueDate = projectTasks[taskId].dueDate;
+                    let priority = projectTasks[taskId].priority;
+
+                    let card = this.createCompletedCard(projectId, taskId, title, description, dueDate, priority);
+
+                    taskListDiv.appendChild(card);
+                }
+            }
+        });
     }
 
     loadProjectPage(projectId) {
@@ -166,14 +224,16 @@ export default class DOMController {
         
 
         for (let taskId in projectTasks) {
-            let title = projectTasks[taskId].title;
-            let description = projectTasks[taskId].description;
-            let dueDate = projectTasks[taskId].dueDate;
-            let priority = projectTasks[taskId].priority;
+            if (!projectTasks[taskId].isComplete) {
+                let title = projectTasks[taskId].title;
+                let description = projectTasks[taskId].description;
+                let dueDate = projectTasks[taskId].dueDate;
+                let priority = projectTasks[taskId].priority;
 
-            let card = this.createCard(projectId, taskId, title, description, dueDate, priority);
+                let card = this.createCard(projectId, taskId, title, description, dueDate, priority);
 
-            taskListDiv.appendChild(card);
+                taskListDiv.appendChild(card);
+            }
         };
     }
 
@@ -289,6 +349,57 @@ export default class DOMController {
 
         return card;
         
+    }
+
+    createCompletedCard(projectId, taskId, title, description, dueDate, priority) {
+        let card = document.createElement("div");
+        
+        card.dataset.projectId = projectId;
+        card.dataset.taskId = taskId;
+        card.classList.add("card");
+
+        // card info section
+        let cardInfo = document.createElement("div");
+        cardInfo.classList.add("card-info");
+
+        let taskTitle = document.createElement("div");
+        taskTitle.classList.add("task-title");
+        taskTitle.classList.add("completed-task-title");
+        taskTitle.textContent = title;
+
+        let extraInfo = document.createElement("div");
+        extraInfo.classList.add("extra-info");
+
+        let projectTitle = this.taskManager.getProject(projectId).title;
+
+        let projectTag = document.createElement("div");
+        projectTag.classList.add("extra-info-tag");
+        projectTag.innerHTML = `
+                <svg class="nav-btn-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M4.616 19q-.691 0-1.153-.462T3 17.384V6.616q0-.691.463-1.153T4.615 5h4.31q.323 0 .628.13q.305.132.522.349L11.596 7h7.789q.69 0 1.153.463T21 8.616v8.769q0 .69-.462 1.153T19.385 19zm0-1h14.769q.269 0 .442-.173t.173-.442v-8.77q0-.269-.173-.442T19.385 8h-8.19L9.366 6.173q-.096-.096-.202-.134Q9.06 6 8.946 6h-4.33q-.269 0-.442.173T4 6.616v10.769q0 .269.173.442t.443.173M4 18V6zm10.9-3.338l1.392 1.063q.131.087.24.006t.059-.217l-.51-1.741l1.461-1.188q.106-.087.056-.22q-.05-.134-.186-.134h-1.766l-.554-1.685q-.05-.136-.192-.136t-.192.136l-.554 1.685h-1.765q-.137 0-.187.134q-.05.133.056.22l1.461 1.188l-.51 1.74q-.05.137.06.218t.239-.006z"/></svg>
+                ${projectTitle}
+            `;
+
+        extraInfo.appendChild(projectTag);
+
+
+        cardInfo.appendChild(taskTitle);
+        cardInfo.appendChild(extraInfo);
+
+        card.appendChild(cardInfo);
+
+        // card options
+        let cardOptions = document.createElement("div");
+        cardOptions.classList.add("card-options");
+
+        let deleteButton = document.createElement("button");
+        deleteButton.classList.add("delete-button");
+        deleteButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M7.616 20q-.672 0-1.144-.472T6 18.385V6H5V5h4v-.77h6V5h4v1h-1v12.385q0 .69-.462 1.153T16.384 20zM17 6H7v12.385q0 .269.173.442t.443.173h8.769q.23 0 .423-.192t.192-.424zM9.808 17h1V8h-1zm3.384 0h1V8h-1zM7 6v13z" stroke-width="0.2" stroke="currentColor"/></svg>`;
+
+        cardOptions.appendChild(deleteButton);
+
+        card.appendChild(cardOptions);
+
+        return card;
     }
 
     createProjectNav(projectId, project) {
