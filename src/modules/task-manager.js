@@ -59,6 +59,11 @@ export default class TaskManager {
         }
     }
 
+    completeTask(projectId, taskId) {
+        let task = this.#projectList[projectId].getTask(taskId);
+        task.isComplete = true;
+    }
+
     deleteTask(projectId, taskId) {
         delete this.#projectList[projectId].getTaskList()[taskId];
     }
