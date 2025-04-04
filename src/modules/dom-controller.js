@@ -18,6 +18,10 @@ export default class DOMController {
             if (e.target.matches("#completed")) {
                 this.loadCompletedTasksPage();
             }
+
+            if (e.target.matches("#today")) {
+                this.loadTodayPage();
+            }
         });
 
         projectListDiv.addEventListener("click", (e) => {
@@ -121,6 +125,89 @@ export default class DOMController {
             this.createProjectNavForm();
         });
 
+    }
+
+    loadTodayPage() {
+        this.clearContentView();
+
+        let container = document.querySelector(".content-view-container");
+
+        // remove project id from dataset
+        delete container.dataset.projectId;
+
+        let pageHeader = document.createElement("div");
+        pageHeader.classList.add("page-header");
+
+        let pageTitle = document.createElement("div");
+        pageTitle.classList.add("page-title");
+        pageTitle.textContent = "Today 📆";
+
+        let addTaskButton = document.createElement("button");
+
+
+        addTaskButton.classList.add("add-task-button"); 
+        addTaskButton.innerHTML = 'Add Task <svg class="add-task-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M11.5 12.5V16q0 .213.144.356t.357.144t.356-.144T12.5 16v-3.5H16q.213 0 .356-.144t.144-.357t-.144-.356T16 11.5h-3.5V8q0-.213-.144-.356t-.357-.144t-.356.144T11.5 8v3.5H8q-.213 0-.356.144t-.144.357t.144.356T8 12.5zm.503 8.5q-1.867 0-3.51-.708q-1.643-.709-2.859-1.924t-1.925-2.856T3 12.003t.709-3.51Q4.417 6.85 5.63 5.634t2.857-1.925T11.997 3t3.51.709q1.643.708 2.859 1.922t1.925 2.857t.709 3.509t-.708 3.51t-1.924 2.859t-2.856 1.925t-3.509.709"/></svg>';    
+
+        
+        let sortDropdown = document.createElement("div");
+        sortDropdown.classList.add("sort-dropdown");
+
+        let sortButton = document.createElement("button");
+        sortButton.classList.add("sort-button");
+        sortButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 21 21"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="m10.5 12.5l4 4.107l4-4.107m-8-4l-4-4l-4 3.997m4-3.997v12m8-12v12" stroke-width="1.2"/></svg>';
+
+        let sortDropdownMenu = document.createElement("div");
+        sortDropdownMenu.classList.add("sort-dropdown-menu");
+
+        let sortDateAdded = document.createElement("button");
+        sortDateAdded.setAttribute("data-value", "date-added");
+        sortDateAdded.textContent = "Date Added";
+
+        let sortPriority = document.createElement("button");
+        sortPriority.setAttribute("data-value", "priority");
+        sortPriority.textContent = "Priority";
+
+        let sortDueDate = document.createElement("button");
+        sortDueDate.setAttribute("data-value", "due-date");
+        sortDueDate.textContent = "Due Date";
+
+        sortDropdownMenu.appendChild(sortDateAdded);
+        sortDropdownMenu.appendChild(sortPriority);
+        sortDropdownMenu.appendChild(sortDueDate);
+
+        sortDropdown.appendChild(sortButton);
+        sortDropdown.appendChild(sortDropdownMenu);
+
+        pageHeader.appendChild(pageTitle);
+        pageHeader.appendChild(addTaskButton);
+        pageHeader.appendChild(sortDropdown);
+
+        container.appendChild(pageHeader);
+        
+        let taskListDiv = document.createElement("div")
+        taskListDiv.classList.add("task-list");
+
+        container.appendChild(taskListDiv);
+
+        // load tasks of current day
+        let projects = this.taskManager.getProjects();
+
+        Object.entries(projects).forEach(([projectId, project]) => {
+            let projectTasks = this.taskManager.getProjectTasks(projectId);
+
+            for (let taskId in projectTasks) {
+                if (isToday(projectTasks[taskId].dueDate)) {
+                    let title = projectTasks[taskId].title;
+                    let description = projectTasks[taskId].description;
+                    let dueDate = projectTasks[taskId].dueDate;
+                    let priority = projectTasks[taskId].priority;
+
+                    let card = this.createTodayCard(projectId, taskId, title, description, dueDate, priority);
+
+                    taskListDiv.appendChild(card);
+                }
+            }
+        });
     }
 
     loadCompletedTasksPage() {
@@ -409,6 +496,76 @@ export default class DOMController {
         cardOptions.appendChild(deleteButton);
 
         card.appendChild(cardOptions);
+
+        return card;
+    }
+
+    createTodayCard(projectId, taskId, title, description, dueDate, priority) {
+        let card = document.createElement("div");
+        
+        card.dataset.projectId = projectId;
+        card.dataset.taskId = taskId;
+        card.classList.add("card");
+
+        // card radio checkbox
+        let radioInput = document.createElement("input")
+        radioInput.type = "radio";
+        radioInput.classList.add("card-checkbox");
+
+        card.appendChild(radioInput);
+
+        // card info section
+        let cardInfo = document.createElement("div");
+        cardInfo.classList.add("card-info");
+
+        let taskTitle = document.createElement("div");
+        taskTitle.classList.add("task-title");
+        taskTitle.textContent = title;
+
+        let extraInfo = document.createElement("div");
+        extraInfo.classList.add("extra-info");
+
+        let projectTitle = this.taskManager.getProject(projectId).title;
+
+        let projectTag = document.createElement("div");
+        projectTag.classList.add("extra-info-tag");
+        projectTag.innerHTML = `
+                <svg class="nav-btn-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M4.616 19q-.691 0-1.153-.462T3 17.384V6.616q0-.691.463-1.153T4.615 5h4.31q.323 0 .628.13q.305.132.522.349L11.596 7h7.789q.69 0 1.153.463T21 8.616v8.769q0 .69-.462 1.153T19.385 19zm0-1h14.769q.269 0 .442-.173t.173-.442v-8.77q0-.269-.173-.442T19.385 8h-8.19L9.366 6.173q-.096-.096-.202-.134Q9.06 6 8.946 6h-4.33q-.269 0-.442.173T4 6.616v10.769q0 .269.173.442t.443.173M4 18V6zm10.9-3.338l1.392 1.063q.131.087.24.006t.059-.217l-.51-1.741l1.461-1.188q.106-.087.056-.22q-.05-.134-.186-.134h-1.766l-.554-1.685q-.05-.136-.192-.136t-.192.136l-.554 1.685h-1.765q-.137 0-.187.134q-.05.133.056.22l1.461 1.188l-.51 1.74q-.05.137.06.218t.239-.006z"/></svg>
+                ${projectTitle}
+            `;
+
+        extraInfo.appendChild(projectTag);
+
+        cardInfo.appendChild(taskTitle);
+        cardInfo.appendChild(extraInfo);
+
+        card.appendChild(cardInfo);
+
+        // card options
+        let cardOptions = document.createElement("div");
+        cardOptions.classList.add("card-options");
+
+        let editButton = document.createElement("button");
+        editButton.classList.add("edit-button");
+        editButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M5.616 20q-.691 0-1.153-.462T4 18.384V5.616q0-.691.463-1.153T5.616 4h8.386l-1 1H5.616q-.231 0-.424.192T5 5.616v12.769q0 .23.192.423t.423.192h12.77q.23 0 .423-.192t.192-.423v-7.489l1-1v8.489q0 .69-.462 1.153T18.384 20zM10 14v-2.615l8.944-8.944q.166-.166.348-.23t.385-.063q.189 0 .368.064t.326.21L21.483 3.5q.16.166.242.365t.083.4t-.061.382q-.06.18-.226.345L12.52 14zm10.814-9.715l-1.112-1.17zM11 13h1.092l6.666-6.666l-.546-.546l-.61-.584L11 11.806zm7.212-7.211l-.61-.585zl.546.546z" stroke-width="0.2" stroke="currentColor"/></svg>`;
+
+        let deleteButton = document.createElement("button");
+        deleteButton.classList.add("delete-button");
+        deleteButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M7.616 20q-.672 0-1.144-.472T6 18.385V6H5V5h4v-.77h6V5h4v1h-1v12.385q0 .69-.462 1.153T16.384 20zM17 6H7v12.385q0 .269.173.442t.443.173h8.769q.23 0 .423-.192t.192-.424zM9.808 17h1V8h-1zm3.384 0h1V8h-1zM7 6v13z" stroke-width="0.2" stroke="currentColor"/></svg>`;
+
+        cardOptions.appendChild(editButton);
+        cardOptions.appendChild(deleteButton);
+
+        card.appendChild(cardOptions);
+
+        // add priority for card
+        if (priority === "high") {
+            card.classList.add("high-priority");
+        } else if (priority === "medium") {
+            card.classList.add("medium-priority");
+        } else if (priority === "low") {
+            card.classList.add("low-priority");
+        }
 
         return card;
     }
