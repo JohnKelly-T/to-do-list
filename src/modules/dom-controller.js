@@ -82,6 +82,17 @@ export default class DOMController {
 
                     projectInput.appendChild(option);
                 }
+                
+                let dateInput = document.querySelector("#date-input");
+
+                // clear date input
+                dateInput.value = "";
+
+                // set date input value to today if on today page
+                if (contentViewContainer.dataset.type === "today") {
+                    
+                    dateInput.value = format(new Date(Date.now()), "yyyy-MM-dd");
+                }
 
                 addTaskDialog.show();
             }
