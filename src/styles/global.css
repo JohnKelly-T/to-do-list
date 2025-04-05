@@ -24,6 +24,7 @@
     --primary-color: #901AE5;
     --primary-color-less-contrast: hsl(275, 50%, 50%);
     --card-color-default: #F6F6F6;
+    --card-color-more-contrast: #e4e4e4;
     --card-color-high-priority: #901AE5;
     --card-color-medium-priority: #FEF7E7;
     --card-color-low-priority: #E7F6FE;
@@ -426,10 +427,6 @@ button:hover {
     color: var(--text-color);
 }
 
-textarea {
-    border: 1px solid red;
-}
-
 .dialog-form input[type="text"]::placeholder, .dialog-form textarea::placeholder {
     color: var(--text-color-less-contrast);
     font-style: italic;
@@ -488,6 +485,7 @@ textarea {
 
 .options-container button {
     color: var(--text-color);
+    background: var(--card-color-more-contrast);
     padding: 0.4rem 0.8rem;
     border: none;
     border-radius: 5px;
