@@ -13,7 +13,7 @@
 }
 
 
-:root {
+:root.light{
     --background-color: #F4F4F4;
     --background-gradient: radial-gradient(at center top, #F4F4F4, #EEEEEE);
     --text-color: #454545;

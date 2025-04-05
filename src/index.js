@@ -6,6 +6,17 @@ import TaskManager from "./modules/task-manager.js";
 import DomController from "./modules/dom-controller.js";
 import {add, sub} from "date-fns";
 
+// load theme from localStorage
+let storedTheme = localStorage.getItem("theme");
+
+if (storedTheme) {
+    document.documentElement.classList.add(storedTheme);
+} else {
+    // load preferred theme
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    document.documentElement.classList.add(prefersDark ? "dark" : "light");
+}
+
 displayDate();
 
 let taskManager = new TaskManager();
