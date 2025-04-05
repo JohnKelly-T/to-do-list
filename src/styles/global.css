@@ -469,6 +469,8 @@ button:hover {
     border-radius: 5px;
     color: var(--text-color);
     height: 1.6rem;
+    font-size: 0.9rem;
+    background: none;
 }
 
 .options-left > *:focus-visible {
