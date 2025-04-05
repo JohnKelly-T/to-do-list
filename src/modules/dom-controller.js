@@ -108,6 +108,23 @@ export default class DOMController {
                 this.taskManager.completeTask(card.dataset.projectId, card.dataset.taskId);
                 card.remove();
             }
+
+            if (e.target.matches(".edit-button")) {
+                let card = e.target.closest(".card");
+                let projectId = Number(card.dataset.projectId);
+                let taskId = Number(card.dataset.taskId);
+
+                // create edit card
+                let editForm = this.createEditForm(projectId, taskId);
+                card.replaceWith(editForm);
+            }
+
+            if (e.target.matches(".form-checkbox")) {
+                let form = e.target.closest(".edit-form");
+                // this.taskManager.completeTask(form.dataset.projectId, form.dataset.taskId);
+                console.log("form done");
+                form.remove();
+            }
         });
 
         dialogForm.addEventListener("submit", (e) => {
@@ -849,5 +866,224 @@ export default class DOMController {
                 this.loadProjects();
             }
         })
+    }
+
+    createEditForm(projectId, taskId) {
+        let task = this.taskManager.getTask(projectId, taskId);
+
+        let editForm = document.createElement("form");
+        editForm.classList.add("edit-form");
+        
+        editForm.dataset.projectId = projectId;
+        editForm.dataset.taskId = taskId;
+
+        // form radio checkbox
+        let radioInput = document.createElement("input")
+        radioInput.type = "radio";
+        radioInput.classList.add("form-checkbox");
+
+        editForm.appendChild(radioInput);
+
+        // form input section
+        let formInfo = document.createElement("div");
+        formInfo.classList.add("form-info");
+
+        let titleInput = document.createElement("input");
+        titleInput.name = "title-input";
+        titleInput.type = "text";
+        titleInput.value = task.title;
+        titleInput.required = true;
+        titleInput.classList.add("title-input");
+
+        let descriptionInput = document.createElement("textarea");
+        descriptionInput.name = "description-input";
+        descriptionInput.value = task.description;
+        descriptionInput.rows = 3;
+        descriptionInput.classList.add("description-input");
+
+        formInfo.appendChild(titleInput);
+        formInfo.appendChild(descriptionInput);
+
+
+        // options
+        let optionsContainer = document.createElement("div");
+        optionsContainer.classList.add("options-container");
+
+        let optionsLeft = document.createElement("div");
+        optionsLeft.classList.add("options-left");
+
+        let projectInput = document.createElement("select");
+        projectInput.name = "project-input";
+        projectInput.classList.add("project-input");
+
+        // load project options
+        let projectList = this.taskManager.getProjects();
+
+        for (let id in projectList) {
+            let option = document.createElement("option");
+            option.textContent = projectList[id].title;
+            option.value = id;
+
+            if (id === projectId) {
+                option.selected = true;
+            }
+
+            projectInput.appendChild(option);
+        }
+
+        // date input
+        let dateInput = document.createElement("input");
+        dateInput.name = "date-input";
+        dateInput.type = "date";
+        dateInput.value = format(task.dueDate, "yyyy-MM-dd");
+
+        // priority input
+        let priorityInput = document.createElement("select");
+        priorityInput.name = "priority-input";
+
+        let defaultOption = document.createElement("option");
+        defaultOption.value = "";
+        defaultOption.textContent = "None";
+
+        let lowOption = document.createElement("option");
+        lowOption.value = "low";
+        lowOption.textContent = "Low";
+
+        let mediumOption = document.createElement("option");
+        mediumOption.value = "medium";
+        mediumOption.textContent = "Medium";
+
+        let highOption = document.createElement("option");
+        highOption.value = "high";
+        highOption.textContent = "High";
+
+        priorityInput.appendChild(defaultOption);
+        priorityInput.appendChild(lowOption);
+        priorityInput.appendChild(mediumOption);
+        priorityInput.appendChild(highOption);
+
+        // set selected option
+        switch (task.priority) {
+            case null:
+                defaultOption.selected = true;
+                break;
+            case "low":
+                lowOption.selected = true;
+                break;
+            case "medium":
+                mediumOption.selected = true;
+                break;
+            case "high":
+                highOption.selected = true;
+                break;
+        }
+
+        optionsLeft.appendChild(projectInput);
+        optionsLeft.appendChild(dateInput);
+        optionsLeft.appendChild(priorityInput);
+
+        let optionsRight = document.createElement("div");
+        optionsRight.classList.add("options-right");
+
+        let cancelButton = document.createElement("button");
+        cancelButton.type = "button";
+        cancelButton.classList.add("cancel-button");
+        cancelButton.textContent = "Cancel";
+
+        let saveButton = document.createElement("button");
+        saveButton.type = "submit";
+        saveButton.classList.add("save-button");
+        saveButton.textContent = "Save";
+
+        optionsRight.appendChild(cancelButton);
+        optionsRight.appendChild(saveButton);
+
+        optionsContainer.appendChild(optionsLeft);
+        optionsContainer.appendChild(optionsRight);
+
+        formInfo.appendChild(optionsContainer);
+
+        editForm.appendChild(formInfo);
+
+        // add editform event listeners 
+        cancelButton.addEventListener("click", (e) => {
+            // get task
+            let task = this.taskManager.getTask(projectId, taskId);
+            
+            // create card depending on page type
+            let contentViewContainer = document.querySelector(".content-view-container");
+
+            let card;
+                
+            switch (contentViewContainer.dataset.type) {
+                case "today": 
+                    card = this.createTodayCard(projectId, taskId, task.title, task.description, task.dueDate, task.priority);
+                    break;
+                case "overdue":
+                case "upcoming": 
+                    card = this.createFullInfoCard(projectId, taskId, task.title, task.description, task.dueDate, task.priority);
+                    break;
+                case "project":
+                    card = this.createCard(projectId, taskId, task.title, task.description, task.dueDate, task.priority);
+                    break;
+            }
+
+            editForm.replaceWith(card);
+        });
+
+        editForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            
+            // get form values
+            let formData = new FormData(editForm);
+
+            let taskTitle = formData.get("title-input");
+            let taskProject = Number(formData.get("project-input"));
+            let taskDescription = formData.get("description-input") === "" ? null : formData.get("description-input");
+            let taskDueDate = formData.get("date-input") === "" ? null : new Date(formData.get("date-input"));
+            let taskPriority = formData.get("priority-input") === "" ? null : formData.get("priority-input");
+
+            // update task
+            if (taskProject == projectId) {
+                this.taskManager.editTask(taskProject, taskId, taskTitle, taskDescription, taskDueDate, taskPriority);
+            } else {
+                this.taskManager.deleteTask(projectId, taskId);
+                this.taskManager.newTask(taskProject, taskTitle, taskDescription, taskDueDate, taskPriority);
+            }
+
+            // create card depending on page type
+            let contentViewContainer = document.querySelector(".content-view-container");
+
+            let card;
+                
+            switch (contentViewContainer.dataset.type) {
+                case "today": 
+                    card = this.createTodayCard(taskProject, taskId, taskTitle, taskDescription, taskDueDate, taskPriority);
+                    editForm.replaceWith(card);
+                    break;
+                case "overdue":
+                case "upcoming": 
+                    card = this.createFullInfoCard(taskProject, taskId, taskTitle, taskDescription, taskDueDate, taskPriority);
+                    editForm.replaceWith(card);
+                    break;
+                case "project":
+                    card = this.createCard(taskProject, taskId, taskTitle, taskDescription, taskDueDate, taskPriority);
+                    
+                    if (taskProject == projectId) {
+                        editForm.replaceWith(card);
+                    } else {
+                        editForm.remove();
+                    }
+            }
+    
+            console.log(taskTitle);
+            console.log(taskProject);
+            console.log(taskDescription);
+            console.log(taskDueDate);
+            console.log(taskPriority);
+
+        });
+
+        return editForm;
     }
 }
