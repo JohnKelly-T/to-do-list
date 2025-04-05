@@ -27,7 +27,6 @@
     --card-color-more-contrast: #e4e4e4;
     --card-color-high-priority: #901AE5;
     --card-color-medium-priority: #FEF7E7;
-    --card-color-low-priority: #E7F6FE;
     
     --stroke-color-default: #B0B0B0;
     --stroke-color-high-priority: #8D2DD2;
@@ -37,6 +36,38 @@
     --hover-color: #EAEAEA;
     --active-color: #E8D5F6;
     --text-input-background: #e6e6e6;
+    --red: #e96161;
+    --green: #34D342;
+    --yellow: #D09C3B;
+
+    --drop-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    --body-padding: 2rem;
+}
+
+:root.dark {
+    color-scheme: dark;
+    --background-color: #1A1A1A;
+    --background-gradient: radial-gradient(at center top, #1A1A1A, #0F0F0F);
+    --text-color: #F5F5F5;
+    --text-color-less-contrast: #dedede;
+    --text-color-more-contrast: #ffffff;
+    --text-color-invert: #454545;
+
+    --primary-color: #A457DB;
+    --primary-color-less-contrast: hsl(275, 50%, 50%);
+    --card-color-default: #1F1F1F;
+    --card-color-more-contrast: #2b2b2b;
+    --card-color-high-priority: #901AE5;
+    --card-color-medium-priority: #342C19;
+    
+    --stroke-color-default: #454545;
+    --stroke-color-high-priority: #8D2DD2;
+    --stroke-color-medium-priority: #EBBA47;
+    --stroke-color-low-priority: #47B1EB;
+
+    --hover-color: #1a1a1a;
+    --active-color: #18111d;
+    --text-input-background: #333333;
     --red: #e96161;
     --green: #34D342;
     --yellow: #D09C3B;
@@ -99,6 +130,10 @@ button:hover {
     font-size: 0.8rem;
     font-style: italic;
     padding: 0 1rem;
+}
+
+.dark .motto {
+    color: white;
 }
 
 .main-container {
@@ -438,6 +473,18 @@ button:hover {
     mask-size: 100% 100%;
 }
 
+.dark .theme-icon {
+    display: inline-block;
+    --svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M12.058 20q-3.333 0-5.667-2.334T4.058 12q0-2.47 1.413-4.535q1.414-2.067 4.01-2.973q.306-.107.536-.056t.381.199t.192.38q.04.233-.063.489q-.194.477-.282.966t-.087 1.03q0 2.667 1.866 4.533t4.534 1.867q.698 0 1.277-.148q.58-.148.988-.24q.218-.04.399.01t.289.176q.118.125.16.308q.04.183-.048.417q-.715 2.45-2.803 4.013T12.058 20m0-1q2.2 0 3.95-1.213t2.55-3.162q-.5.125-1 .2t-1 .075q-3.075 0-5.238-2.162T9.158 7.5q0-.5.075-1t.2-1q-1.95.8-3.163 2.55T5.058 12q0 2.9 2.05 4.95t4.95 2.05m-.25-6.75' stroke-width='0.2' stroke='%23000'/%3E%3C/svg%3E");
+    background-color: currentColor;
+    -webkit-mask-image: var(--svg);
+    mask-image: var(--svg);
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+}
+
 .add-task-dialog {
     position: absolute;
     top: 0;
@@ -498,6 +545,10 @@ button:hover {
     gap: 1.5rem;
     margin-top: 1rem;
     flex-wrap: wrap;
+}
+
+.options-container select {
+    background-color: var(--card-color-default);
 }
 
 .options-left {
