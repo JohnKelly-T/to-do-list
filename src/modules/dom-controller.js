@@ -99,7 +99,6 @@ export default class DOMController {
                 }
 
                 this.taskManager.deleteProject(projectId);
-                console.log(this.taskManager.getProjects());
                 e.target.closest(".project-nav").remove();
             }
         });
@@ -169,7 +168,6 @@ export default class DOMController {
             if (e.target.matches(".form-checkbox")) {
                 let form = e.target.closest(".edit-form");
                 this.taskManager.completeTask(form.dataset.projectId, form.dataset.taskId);
-                console.log("form done");
                 form.remove();
 
                 // reload task count
@@ -250,7 +248,6 @@ export default class DOMController {
             this.loadQuickTasks();
 
             quickTaskForm.reset();
-            console.log("submitted");
         })
     }
 
@@ -330,7 +327,6 @@ export default class DOMController {
 
         for (let taskId in quickTaskList) {
             let card = this.createQuickTaskCard(taskId, quickTaskList[taskId].title);
-            console.log(`task id: ${taskId} task title: ${quickTaskList[taskId].title}`)
 
             quickTaskListDiv.appendChild(card);
         }
@@ -916,7 +912,6 @@ export default class DOMController {
         let taskCount = document.createElement("div");
         taskCount.classList.add("task-count");
         let count = Object.values(project.getTaskList()).filter(task => !task.isComplete).length;
-        console.log(count);
         taskCount.textContent = count === 0 ? "" : count;
 
         let deleteProjectButton = document.createElement("button");
@@ -1192,12 +1187,6 @@ export default class DOMController {
                         editForm.remove();
                     }
             }
-    
-            console.log(taskTitle);
-            console.log(taskProject);
-            console.log(taskDescription);
-            console.log(taskDueDate);
-            console.log(taskPriority);
 
         });
 
