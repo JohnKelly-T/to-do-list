@@ -107,7 +107,7 @@
 }
 
 .card.high-priority {
-    color: var(--text-color-invert);
+    color: white;
     background: var(--card-color-high-priority);
     border: 1px solid var(--stroke-color-high-priority);
 }
@@ -141,7 +141,7 @@
 }
 
 .high-priority .card-checkbox {
-    border: 2px solid var(--text-color-invert);
+    border: 2px solid white;
 }
 
 .medium-priority .card-checkbox {
@@ -211,7 +211,7 @@
 }
 
 .form-info .options-container select, .form-info .options-container input{
-    background: none;
+    background: var(--card-color-default);
     font-size: 0.8rem;
 }
 
