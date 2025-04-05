@@ -7,12 +7,13 @@ export default function () {
     
     if (saveFile) {
         let taskManager = new TaskManager();
+
+        saveFile = JSON.parse(saveFile);
+
         taskManager.taskIdCounter = saveFile.taskIdCounter;
         taskManager.projectIdCounter = saveFile.projectIdCounter;
         
         let newProjectList = {};
-
-        saveFile = JSON.parse(saveFile);
 
         let projectList = saveFile.projectList;
 
