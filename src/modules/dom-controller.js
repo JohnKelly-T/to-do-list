@@ -5,6 +5,7 @@ export default class DOMController {
     constructor(taskManager) {
         this.taskManager = taskManager;
         this.loadProjects();
+        this.loadQuickTasks();
 
         // set active nav
         let homeNav = document.querySelector("#home");
