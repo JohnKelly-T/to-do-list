@@ -19,6 +19,13 @@ export default class DOMController {
         let sideNav = document.querySelector(".side-nav");
         let quickTasksList = document.querySelector("#quick-tasks-list")
         let quickTaskForm = document.querySelector("#quick-task-form");
+        let toggleThemeButton = document.querySelector(".toggle-theme");
+
+        toggleThemeButton.addEventListener("click", (e) => {
+            let root = document.documentElement;
+
+            root.classList.toggle("dark");
+        });
 
         quickTasksList.addEventListener("click", (e) => {
             if (e.target.matches(".card-checkbox")) {
