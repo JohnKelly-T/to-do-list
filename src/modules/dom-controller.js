@@ -526,7 +526,7 @@ export default class DOMController {
                 dateTag.classList.add("tomorrow");
             } else if (isBefore(dueDate,  Date.now())) {
                 dueDate = "Overdue";
-                dateTag.classList.add("pastToday");
+                dateTag.classList.add("past-today");
             } else if (isThisYear(dueDate)) {
                 dueDate = format(dueDate, "d MMM");
             } else if (!isThisYear(dueDate)) {
@@ -744,7 +744,7 @@ export default class DOMController {
                 dateTag.classList.add("tomorrow");
             } else if (isBefore(dueDate,  Date.now())) {
                 dueDate = "Overdue";
-                dateTag.classList.add("pastToday");
+                dateTag.classList.add("past-today");
             } else if (isThisYear(dueDate)) {
                 dueDate = format(dueDate, "d MMM");
             } else if (!isThisYear(dueDate)) {

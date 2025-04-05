@@ -277,6 +277,6 @@
     color: var(--yellow);
 }
 
-.pastToday {
+.past-today {
     color: var(--red);
 }
