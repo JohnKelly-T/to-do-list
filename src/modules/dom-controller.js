@@ -168,9 +168,12 @@ export default class DOMController {
 
             if (e.target.matches(".form-checkbox")) {
                 let form = e.target.closest(".edit-form");
-                // this.taskManager.completeTask(form.dataset.projectId, form.dataset.taskId);
+                this.taskManager.completeTask(form.dataset.projectId, form.dataset.taskId);
                 console.log("form done");
                 form.remove();
+
+                // reload task count
+                this.loadProjects();
             }
         });
 
