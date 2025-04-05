@@ -17,6 +17,28 @@ export default class DOMController {
         let dialogForm = document.querySelector(".dialog-form");
         let addProjectButton = document.querySelector("#add-project");
         let sideNav = document.querySelector(".side-nav");
+        let quickTasksList = document.querySelector("#quick-tasks-list")
+        let quickTaskForm = document.querySelector("#quick-task-form");
+
+        quickTasksList.addEventListener("click", (e) => {
+            if (e.target.matches(".card-checkbox")) {
+                let card = e.target.closest(".quick-task-card");
+                
+                // complete task
+                this.taskManager.completeTask(card.dataset.projectId, card.dataset.taskId);
+
+                card.remove();
+            }
+
+            if (e.target.matches(".delete-task-button")) {
+                let card = e.target.closest(".quick-task-card");    
+
+                // delete task
+                this.taskManager.deleteTask(card.dataset.projectId, card.dataset.taskId);
+
+                card.remove();
+            }
+        });
 
         sideNav.addEventListener("click", (e) => {
             if (e.target.matches("#completed")) {
@@ -187,6 +209,21 @@ export default class DOMController {
             this.createProjectNavForm();
         });
 
+        quickTaskForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+
+            let formData = new FormData(quickTaskForm);
+            let taskTitle = formData.get("quick-task-input");
+
+            // create new task
+            this.taskManager.newTask(1, taskTitle, null, null, null, null);
+
+            // create new task card
+            this.loadQuickTasks();
+
+            quickTaskForm.reset();
+            console.log("submitted");
+        })
     }
 
     changeActiveNav(activeNav) {
@@ -254,6 +291,21 @@ export default class DOMController {
                 }
             }
         });
+    }
+
+    loadQuickTasks() {
+        let quickTaskListDiv =  document.querySelector("#quick-tasks-list");
+        let quickTaskList = this.taskManager.getProjectTasks(1);
+
+        //clear tasklist div
+        quickTaskListDiv.innerHTML = "";
+
+        for (let taskId in quickTaskList) {
+            let card = this.createQuickTaskCard(taskId, quickTaskList[taskId].title);
+            console.log(`task id: ${taskId} task title: ${quickTaskList[taskId].title}`)
+
+            quickTaskListDiv.appendChild(card);
+        }
     }
 
     loadUpcomingPage() {
@@ -470,6 +522,10 @@ export default class DOMController {
         projectListDiv.innerHTML = "";
 
         for (const id in projects) {
+            if (id == 1) {
+                continue;
+            }
+
             this.createProjectNav(id, projects[id]);
         }
     }
@@ -490,6 +546,30 @@ export default class DOMController {
     }
 
     // components section
+    createQuickTaskCard(taskId, taskTitle) {
+        let card = document.createElement("div");
+
+        card.dataset.projectId = 1;
+        card.dataset.taskId = taskId;
+        card.classList.add("quick-task-card");
+
+        let radioInput = document.createElement("input");
+        radioInput.type = "radio";
+        radioInput.classList.add("card-checkbox");
+
+        let cardText = document.createElement("div");
+        cardText.textContent = taskTitle;
+
+        let deleteTaskButton = document.createElement("button");
+        deleteTaskButton.classList.add("delete-task-button");
+        deleteTaskButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M7.616 20q-.672 0-1.144-.472T6 18.385V6H5V5h4v-.77h6V5h4v1h-1v12.385q0 .69-.462 1.153T16.384 20zM17 6H7v12.385q0 .269.173.442t.443.173h8.769q.23 0 .423-.192t.192-.424zM9.808 17h1V8h-1zm3.384 0h1V8h-1zM7 6v13z" stroke-width="0.2" stroke="currentColor"/></svg>`;
+    
+        card.appendChild(radioInput);
+        card.appendChild(cardText);
+        card.appendChild(deleteTaskButton);
+        return card;
+    }
+
     createCard(projectId, taskId, title, description, dueDate, priority) {
         let card = document.createElement("div");
         
