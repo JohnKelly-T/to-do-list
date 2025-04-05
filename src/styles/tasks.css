@@ -91,7 +91,7 @@
     gap: 1rem;
 }
 
-.card {
+.card, .edit-form {
     display: flex;
     gap: 1rem;
     align-items: start;
@@ -100,6 +100,10 @@
     border-radius: 10px;
     padding: 1rem 1.5rem;
     color: var(--text-color);
+}
+
+.edit-form {
+    border: 2px solid var(--stroke-color-default);
 }
 
 .card.high-priority {
@@ -117,7 +121,7 @@
     border: 1px solid var(--stroke-color-low-priority);
 }
 
-.card-checkbox {
+.card-checkbox, .form-checkbox {
     -webkit-appearance: none;
     appearance: none;
     background: none;
@@ -132,7 +136,7 @@
     place-content: center;
 }
 
-.card-checkbox:hover {
+.card-checkbox:hover, .form-checkbox:hover {
     cursor: pointer;
 }
 
@@ -148,7 +152,7 @@
     border: 2px solid var(--stroke-color-low-priority);
 }
 
-.card-checkbox::before {
+.card-checkbox::before, .form-checkbox::before {
     content: "";
     width: 0.8rem;
     aspect-ratio: 1;
@@ -162,18 +166,57 @@
     background-color: var(--text-color-invert);
 }
 
-.card-checkbox:checked::before{
+.card-checkbox:checked::before, .form-checkbox:checked::before {
     transform: scale(1);
 }
 
-.card-info {
+.card-info, .form-info {
     display: flex;
     flex-direction: column;
     gap: 0.3rem;
 }
 
-.task-title {
+.form-info {
+    flex: 1;
+}
+
+.task-title, .title-input {
     font-weight: 500;
+}
+
+.title-input {
+    color: var(--text-color-more-contrast);
+    background: none;
+    border: none;
+}
+
+.title-input:focus-visible {
+    outline: none;
+    border: none;
+    border-bottom: 1px solid var(--stroke-color-default);
+}
+
+.description-input {
+    color: var(--text-color-more-contrast);
+    background: none;
+    border: none;
+    border-radius: 5px;
+    resize: none;
+    font-size: 0.9rem;
+}
+
+.description-input:focus-visible {
+    outline: none;
+    border: 1px solid var(--stroke-color-default);
+}
+
+.form-info .options-container select, .form-info .options-container input{
+    background: none;
+    font-size: 0.8rem;
+}
+
+.form-info .options-container button {
+    font-size: 0.8rem;
 }
 
 .completed-task-title {
