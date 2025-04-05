@@ -820,6 +820,13 @@ export default class DOMController {
 
         if (projectId == 0) projectNav.id = "home";
 
+        // add active class
+        let contentViewContainer = document.querySelector(".content-view-container");
+
+        if (projectId == contentViewContainer.dataset.projectId) {
+            projectNav.classList.add("active-nav");
+        }
+
         projectListDiv.appendChild(projectNav);
     }
 
