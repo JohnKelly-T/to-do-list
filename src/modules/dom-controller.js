@@ -166,6 +166,7 @@ export default class DOMController {
 
             addTaskDialog.close();
             this.clearDialogForm();
+            this.loadProjects();
         })
 
         
