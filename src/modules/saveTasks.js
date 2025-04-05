@@ -7,5 +7,5 @@ export default function (taskManager) {
         "projectList": taskManager.getProjects()
     }
 
-    localStorage.setItem("saveFile", JSON.stringify(saveFile));
+    localStorage.setItem("todoSaveFile", JSON.stringify(saveFile));
 }

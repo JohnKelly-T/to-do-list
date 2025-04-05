@@ -3,7 +3,7 @@ import Task from "./task";
 import TaskManager from "./task-manager";
 
 export default function () {
-    let saveFile = localStorage.getItem("saveFile");
+    let saveFile = localStorage.getItem("todoSaveFile");
     
     if (saveFile) {
         let taskManager = new TaskManager();
