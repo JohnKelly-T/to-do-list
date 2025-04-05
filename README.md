@@ -4,13 +4,14 @@ Seizely is a simple To-Do list application built with JavaScript, Webpack, and J
 
 ## Features
 
-- Add new tasks to your to-do list.
-- A quick tasks section for very quick tasks.
-- Edit existing tasks.
-- Mark tasks as complete.
-- Delete tasks.
-- Organize tasks into projects.
-- Light and Dark mode.
+- ✏️ Create new tasks and add them to your to-do list
+- ⚡ Quickly jot down small items with the Quick Tasks section
+- 🛠️ Edit existing tasks to keep your list up to date
+- ✅ Mark tasks as complete to track your progress
+- 🗑️ Remove tasks when they’re no longer needed
+- 🗂️ Organize tasks into customizable Projects for better focus
+- 🌙 Switch between Light and Dark Mode for comfortable viewing
+- 💾 Automatically saves your data using Local Storage
 
 ## Live Demo
 https://johnkelly-t.github.io/to-do-list/
