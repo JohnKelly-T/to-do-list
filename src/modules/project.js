@@ -1,19 +1,19 @@
 export default class Project {
-    #taskList = {};
+    taskList = {};
 
     constructor(title) {
         this.title = title;
     }
 
     addTask(task, taskId) {
-        this.#taskList[taskId] = task;
+        this.taskList[taskId] = task;
     }
 
     getTask(taskId) {
-        return this.#taskList[taskId];
+        return this.taskList[taskId];
     }
 
     getTaskList() {
-        return this.#taskList;
+        return this.taskList;
     }
 }
