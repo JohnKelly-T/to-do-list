@@ -24,7 +24,13 @@ export default class DOMController {
         toggleThemeButton.addEventListener("click", (e) => {
             let root = document.documentElement;
 
-            root.classList.toggle("dark");
+            if (root.classList.contains("dark")) {
+                root.classList.replace("dark", "light");
+                localStorage.setItem("theme", "light");
+            } else {
+                root.classList.replace("light", "dark");
+                localStorage.setItem("theme", "dark");
+            }
         });
 
         quickTasksList.addEventListener("click", (e) => {
