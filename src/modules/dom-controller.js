@@ -31,10 +31,10 @@ export default class DOMController {
 
             if (root.classList.contains("dark")) {
                 root.classList.replace("dark", "light");
-                localStorage.setItem("theme", "light");
+                localStorage.setItem("todoTheme", "light");
             } else {
                 root.classList.replace("light", "dark");
-                localStorage.setItem("theme", "dark");
+                localStorage.setItem("todoTheme", "dark");
             }
         });
 

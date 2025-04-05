@@ -11,7 +11,7 @@ import loadTasks from "./modules/loadTasks.js";
 displayDate();
 
 // load theme from localStorage
-let storedTheme = localStorage.getItem("theme");
+let storedTheme = localStorage.getItem("todoTheme");
 
 if (storedTheme) {
     document.documentElement.classList.add(storedTheme);
