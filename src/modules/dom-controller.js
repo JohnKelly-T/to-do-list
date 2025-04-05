@@ -142,12 +142,18 @@ export default class DOMController {
                 let card = e.target.closest(".card");
                 this.taskManager.deleteTask(card.dataset.projectId, card.dataset.taskId);
                 card.remove();
+
+                // reload task counts
+                this.loadProjects();
             }
 
             if (e.target.matches(".card-checkbox")) {
                 let card = e.target.closest(".card");
                 this.taskManager.completeTask(card.dataset.projectId, card.dataset.taskId);
                 card.remove();
+
+                // reload task counts
+                this.loadProjects();
             }
 
             if (e.target.matches(".edit-button")) {
@@ -906,7 +912,8 @@ export default class DOMController {
 
         let taskCount = document.createElement("div");
         taskCount.classList.add("task-count");
-        let count = Object.keys(project.getTaskList()).length;
+        let count = Object.values(project.getTaskList()).filter(task => !task.isComplete).length;
+        console.log(count);
         taskCount.textContent = count === 0 ? "" : count;
 
         let deleteProjectButton = document.createElement("button");
