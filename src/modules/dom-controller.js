@@ -1,4 +1,5 @@
 import { format, isToday, isTomorrow, isBefore, isThisYear, isFuture, isPast } from "date-fns";
+import saveTasks from "./saveTasks.js";
 
 export default class DOMController {
     constructor(taskManager) {
@@ -20,6 +21,10 @@ export default class DOMController {
         let quickTasksList = document.querySelector("#quick-tasks-list")
         let quickTaskForm = document.querySelector("#quick-task-form");
         let toggleThemeButton = document.querySelector(".toggle-theme");
+
+        window.addEventListener("beforeunload", (e) => {
+            saveTasks(this.taskManager);
+        });
 
         toggleThemeButton.addEventListener("click", (e) => {
             let root = document.documentElement;
