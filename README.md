@@ -1,6 +1,6 @@
 # To-Do List App: Seizely
 
-Seizely is a simple To-Do list application built with JavaScript, Webpack, and JavaScript Modules. This app allows users to create and manage tasks, helping to organize and prioritize their daily activities.
+Seizely is a simple To-Do list application created as part of The Odin Project curriculum. Built with JavaScript, Webpack, and JavaScript Modules. This app allows users to create and manage tasks, helping to organize and prioritize their daily activities.
 
 ## Features
 
