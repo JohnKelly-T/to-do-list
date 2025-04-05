@@ -14,6 +14,21 @@ export default class TaskManager {
         this.#taskIdCounter = storedCounter;
     }
 
+    get projectIdCounter() {
+        return this.#projectIdCounter;
+    }
+
+    get taskIdCounter() {
+        return this.#taskIdCounter;
+    }
+
+    set projectList(list) {
+
+        if (typeof list === 'object' && list !== null && !Array.isArray(list)) {
+            this.#projectList = list;
+        }
+    }
+
     newTask(projectId, title, description, dueDate, priority) {
         let task = new Task(title);
 
