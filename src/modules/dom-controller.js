@@ -1052,7 +1052,7 @@ export default class DOMController {
         let dateInput = document.createElement("input");
         dateInput.name = "date-input";
         dateInput.type = "date";
-        dateInput.value = task.dueDate === null ? null : format(task.dueDate, "yyyy-MM-dd");
+        dateInput.value = task.dueDate === null ? "" : format(task.dueDate, "yyyy-MM-dd");
 
         // priority input
         let priorityInput = document.createElement("select");
