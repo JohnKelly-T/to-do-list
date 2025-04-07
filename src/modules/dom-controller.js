@@ -184,7 +184,7 @@ export default class DOMController {
             let dateInput = dialogForm.querySelector("#date-input").value;
             let priorityInput = dialogForm.querySelector("#priority-input").value;
 
-            let date = dateInput === "" ? dateInput : new Date(dateInput);
+            let date = dateInput === "" ? null : new Date(dateInput);
 
             // convert to null if they're empty
 
