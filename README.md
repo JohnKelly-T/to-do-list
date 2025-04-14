@@ -29,6 +29,14 @@ https://johnkelly-t.github.io/to-do-list/
 - **Webpack** for bundling the application.
 - **Figma** for UI design.
 
+## 📙 Concepts Practiced
+
+- Object-Oriented Programming (OOP) in JavaScript
+- Working with classes and instances to manage task data
+- Encapsulation, inheritance, and methods for managing tasks
+- Creating and managing arrays of objects
+- Organizing and structuring code in an object-oriented way
+
 ## Getting Started
 
 To get a local copy up and running, follow these steps:
