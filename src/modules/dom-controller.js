@@ -326,6 +326,10 @@ export default class DOMController {
         quickTaskListDiv.innerHTML = "";
 
         for (let taskId in quickTaskList) {
+            if (this.taskManager.getTask(1, taskId).isComplete) {
+                continue;
+            }
+            
             let card = this.createQuickTaskCard(taskId, quickTaskList[taskId].title);
 
             quickTaskListDiv.appendChild(card);
